@@ -110,6 +110,20 @@ def shap_explain():
         return jsonify({"msg": f"SHAP计算失败: {str(e)}"}), 500
 
 
+@model_bp.route("/history/<int:prediction_id>", methods=["DELETE"])
+@jwt_required()
+def delete_prediction(prediction_id):
+    user_id = int(get_jwt_identity())
+    pred = db.session.get(Prediction, prediction_id)
+    if not pred:
+        return jsonify({"msg": "记录不存在"}), 404
+    if pred.user_id != user_id:
+        return jsonify({"msg": "无权删除"}), 403
+    db.session.delete(pred)
+    db.session.commit()
+    return jsonify({"msg": "已删除"}), 200
+
+
 @model_bp.route("/history", methods=["GET"])
 @jwt_required()
 def prediction_history():

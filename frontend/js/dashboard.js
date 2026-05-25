@@ -103,7 +103,7 @@ function renderCountryBar(data) {
             data: data.map(d => d.avg_score).reverse(),
             itemStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-                    { offset: 0, color: "#f76d37" }, { offset: 1, color: "#252525" },
+                    { offset: 0, color: "#d85521" }, { offset: 1, color: "#f76d37" },
                 ]),
                 borderRadius: [0, 6, 6, 0],
             },
@@ -144,7 +144,7 @@ function renderDistribution(data) {
             data: data.map(d => d.count),
             itemStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: "#252525" }, { offset: 1, color: "#f76d37" },
+                    { offset: 0, color: "#d85521" }, { offset: 1, color: "#f76d37" },
                 ]),
                 borderRadius: [6, 6, 0, 0],
             },

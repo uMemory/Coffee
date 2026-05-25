@@ -41,11 +41,28 @@ function renderHistBody(data) {
             <td class="${getScoreClass(r.predicted_score)}">${r.predicted_score?.toFixed(1)}</td>
             <td><span class="quality-tag ${toEnglishClass(r.predicted_class)}">${r.predicted_class}</span></td>
             <td style="font-size:12px;color:#6f6f6f;">${r.model || "随机森林"}</td>
-            <td><button class="btn btn-ghost btn-sm view-detail" data-r='${JSON.stringify(r)}'>详情</button></td>
+            <td style="display:flex;gap:6px;">
+                <button class="btn btn-ghost btn-sm view-detail" data-r='${JSON.stringify(r)}'>详情</button>
+                <button class="btn btn-sm btn-delete" data-id="${r.id}" style="background:#fff;color:#d64545;border:1px solid #d64545;">删除</button>
+            </td>
         </tr>`;
     }).join("");
     tbody.querySelectorAll(".view-detail").forEach(btn => {
         btn.addEventListener("click", () => showHistDetail(JSON.parse(btn.dataset.r)));
+    });
+    tbody.querySelectorAll(".btn-delete").forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            if (!confirm("确定要删除这条预测记录吗？")) return;
+            const id = parseInt(btn.dataset.id);
+            try {
+                await ModelAPI.deleteHistory(id);
+                showToast("已删除", "success");
+                loadHistory();
+            } catch (err) {
+                showToast("删除失败: " + err.message, "error");
+            }
+        });
     });
 }
 

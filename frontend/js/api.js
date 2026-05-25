@@ -83,4 +83,5 @@ const ModelAPI = {
     compare: () => apiFetch("/model/compare"),
     list: () => apiFetch("/model/list"),
     shap: (features, model) => apiFetch("/model/shap", { method: "POST", body: JSON.stringify({ features, model }) }),
+    deleteHistory: (id) => apiFetch(`/model/history/${id}`, { method: "DELETE" }),
 };
