@@ -5,7 +5,10 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from backend.extensions import db
 from backend.models.coffee import Prediction
-from backend.services.ml_service import predict, get_feature_info, get_metadata
+from backend.services.ml_service import (
+    predict, get_feature_info, get_compare_data,
+    get_available_models, load_model, compute_shap,
+)
 
 model_bp = Blueprint("model", __name__)
 
@@ -19,11 +22,25 @@ def features():
 @model_bp.route("/info", methods=["GET"])
 @jwt_required()
 def model_info():
-    try:
-        meta = get_metadata()
-        return jsonify(meta), 200
-    except FileNotFoundError as e:
-        return jsonify({"msg": str(e)}), 503
+    data = get_compare_data()
+    if not data:
+        return jsonify({"msg": "未找到模型数据，请先训练模型"}), 503
+    return jsonify(data), 200
+
+
+@model_bp.route("/list", methods=["GET"])
+@jwt_required()
+def model_list():
+    return jsonify(get_available_models()), 200
+
+
+@model_bp.route("/compare", methods=["GET"])
+@jwt_required()
+def compare_models():
+    data = get_compare_data()
+    if not data:
+        return jsonify({"msg": "未找到模型对比数据，请先运行多模型训练"}), 503
+    return jsonify(data), 200
 
 
 @model_bp.route("/predict", methods=["POST"])
@@ -31,24 +48,25 @@ def model_info():
 def predict_score():
     data = request.get_json()
     if not data:
-        return jsonify({"msg": "请提供特征参数"}), 400
+        return jsonify({"msg": "请提供参数"}), 400
 
-    # 提取特征
+    # 兼容两种格式: {features: {...}, model: "rf"} 或直接 {...}
+    features = data.get("features", data)
+    model_name = data.get("model", "rf")
+
+    # 过滤掉非特征字段
     feature_names = [f["name"] for f in get_feature_info()]
-    features = {}
+    clean_features = {}
     for name in feature_names:
-        if name in data:
-            val = data[name]
-            if val == "" or val is None:
-                return jsonify({"msg": f"参数 {name} 不能为空"}), 400
-            features[name] = float(val)
+        if name in features and features[name] is not None and features[name] != "":
+            clean_features[name] = float(features[name])
 
-    if len(features) != len(feature_names):
-        missing = set(feature_names) - set(features.keys())
+    if len(clean_features) < len(feature_names):
+        missing = set(feature_names) - set(clean_features.keys())
         return jsonify({"msg": f"缺少参数: {', '.join(missing)}"}), 400
 
     try:
-        result = predict(features)
+        result = predict(clean_features, model_name)
     except FileNotFoundError as e:
         return jsonify({"msg": str(e)}), 503
 
@@ -56,7 +74,7 @@ def predict_score():
     user_id = int(get_jwt_identity())
     prediction = Prediction(
         user_id=user_id,
-        input_features=features,
+        input_features=clean_features,
         predicted_score=result["predicted_score"],
         predicted_class=result["quality_class"],
         created_at=datetime.utcnow(),
@@ -64,7 +82,32 @@ def predict_score():
     db.session.add(prediction)
     db.session.commit()
 
+    # 添加预测ID到返回
+    result["prediction_id"] = prediction.id
     return jsonify(result), 200
+
+
+@model_bp.route("/shap", methods=["POST"])
+@jwt_required()
+def shap_explain():
+    data = request.get_json()
+    if not data:
+        return jsonify({"msg": "请提供参数"}), 400
+
+    features = data.get("features", data)
+    model_name = data.get("model", "rf")
+
+    feature_names = [f["name"] for f in get_feature_info()]
+    clean_features = {}
+    for name in feature_names:
+        if name in features and features[name] is not None and features[name] != "":
+            clean_features[name] = float(features[name])
+
+    try:
+        shap_data = compute_shap(clean_features, model_name)
+        return jsonify(shap_data), 200
+    except Exception as e:
+        return jsonify({"msg": f"SHAP计算失败: {str(e)}"}), 500
 
 
 @model_bp.route("/history", methods=["GET"])
@@ -82,8 +125,5 @@ def prediction_history():
 
     return jsonify({
         "data": [item.to_dict() for item in items],
-        "total": total,
-        "page": page,
-        "pages": total_pages,
-        "limit": limit,
+        "total": total, "page": page, "pages": total_pages, "limit": limit,
     }), 200

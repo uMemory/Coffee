@@ -1,17 +1,31 @@
-/* ========== 共享工具函数 ========== */
+/* ================================================================
+   API 封装 + 共享工具函数
+   ================================================================ */
+
+const API_BASE = "/api";
+
+/* -------- 工具函数 -------- */
 function toEnglishClass(zh) {
     const map = { "卓越": "excellent", "优秀": "very-good", "良好": "good", "一般": "average", "较差": "below-avg", "below-average": "below-avg" };
     return map[zh] || "below-avg";
 }
 
 const QUALITY_COLORS = { "卓越": "#2F8F62", "优秀": "#315F88", "良好": "#D99A21", "一般": "#C96F2D", "较差": "#C94E46" };
-const CHART_GRADIENT_START = "#9A6B43";
-const CHART_GRADIENT_END = "#D9A441";
 
-/* ========== API请求封装 ========== */
+function getScoreClass(score) {
+    if (score >= 85) return "score-high";
+    if (score >= 75) return "score-mid";
+    return "score-low";
+}
 
-const API_BASE = "/api";
+function formatTime(isoStr) {
+    if (!isoStr) return "-";
+    const d = new Date(isoStr);
+    const pad = (n) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
+/* -------- HTTP 核心 -------- */
 function getToken() {
     return localStorage.getItem("token");
 }
@@ -23,47 +37,31 @@ async function apiFetch(url, options = {}) {
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...options.headers,
     };
-
-    const response = await fetch(API_BASE + url, {
-        ...options,
-        headers,
-    });
-
+    const response = await fetch(API_BASE + url, { ...options, headers });
     if (response.status === 401) {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         window.location.hash = "#login";
         throw new Error("登录已过期，请重新登录");
     }
-
     const data = await response.json();
-
-    if (!response.ok) {
-        throw new Error(data.msg || "请求失败");
-    }
-
+    if (!response.ok) throw new Error(data.msg || "请求失败");
     return data;
 }
 
-/* ===== 认证 ===== */
+/* -------- 认证 -------- */
 const AuthAPI = {
     register: (username, password, email) =>
-        apiFetch("/auth/register", {
-            method: "POST",
-            body: JSON.stringify({ username, password, email }),
-        }),
+        apiFetch("/auth/register", { method: "POST", body: JSON.stringify({ username, password, email }) }),
     login: (username, password) =>
-        apiFetch("/auth/login", {
-            method: "POST",
-            body: JSON.stringify({ username, password }),
-        }),
+        apiFetch("/auth/login", { method: "POST", body: JSON.stringify({ username, password }) }),
     me: () => apiFetch("/auth/me"),
 };
 
-/* ===== 咖啡数据 ===== */
+/* -------- 咖啡数据 -------- */
 const CoffeeAPI = {
     list: (params = {}) => {
-        const qs = new URLSearchParams(params).toString();
+        const qs = new URLSearchParams(Object.entries(params).filter(([,v]) => v != null && v !== "")).toString();
         return apiFetch(`/coffee?${qs}`);
     },
     get: (id) => apiFetch(`/coffee/${id}`),
@@ -71,7 +69,7 @@ const CoffeeAPI = {
     varieties: () => apiFetch("/coffee/varieties"),
 };
 
-/* ===== 统计分析 ===== */
+/* -------- 统计分析 -------- */
 const StatsAPI = {
     summary: () => apiFetch("/stats/summary"),
     byCountry: () => apiFetch("/stats/by-country"),
@@ -82,17 +80,18 @@ const StatsAPI = {
     countryDetail: (country) => apiFetch(`/stats/country/${encodeURIComponent(country)}`),
 };
 
-/* ===== 模型 ===== */
+/* -------- 模型 -------- */
 const ModelAPI = {
     features: () => apiFetch("/model/features"),
     info: () => apiFetch("/model/info"),
-    predict: (features) =>
-        apiFetch("/model/predict", {
-            method: "POST",
-            body: JSON.stringify(features),
-        }),
+    predict: (features, model) =>
+        apiFetch("/model/predict", { method: "POST", body: JSON.stringify({ features, model }) }),
     history: (params = {}) => {
-        const qs = new URLSearchParams(params).toString();
+        const qs = new URLSearchParams(Object.entries(params).filter(([,v]) => v != null && v !== "")).toString();
         return apiFetch(`/model/history?${qs}`);
     },
+    compare: () => apiFetch("/model/compare"),
+    list: () => apiFetch("/model/list"),
+    shap: (features, model) =>
+        apiFetch("/model/shap", { method: "POST", body: JSON.stringify({ features, model }) }),
 };

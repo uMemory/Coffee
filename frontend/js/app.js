@@ -1,4 +1,6 @@
-/* ========== 应用路由与状态管理 ========== */
+/* ================================================================
+   App — 路由 / 认证 / Toast / 全局状态
+   ================================================================ */
 
 const App = {
     token: localStorage.getItem("token"),
@@ -11,11 +13,11 @@ const App = {
         "#data": renderDataTable,
         "#analysis": renderAnalysis,
         "#predict": renderModelTest,
+        "#models": renderModelCompare,
         "#history": renderHistory,
     },
 
     async init() {
-        // 验证token
         if (this.token) {
             try {
                 const data = await AuthAPI.me();
@@ -25,7 +27,6 @@ const App = {
                 this.logout(true);
             }
         }
-
         this.updateNav();
         this.handleRoute();
         window.addEventListener("hashchange", () => this.handleRoute());
@@ -47,7 +48,6 @@ const App = {
     },
 
     updateNav() {
-        const navbar = document.getElementById("navbar");
         const navLinks = document.getElementById("nav-links");
         const navUser = document.querySelector(".nav-user");
 
@@ -55,15 +55,16 @@ const App = {
             navLinks.style.display = "none";
             navUser.style.display = "none";
         } else {
-            navLinks.style.display = "flex";
-            navUser.style.display = "flex";
-            document.getElementById("nav-username").textContent = this.user?.username || "";
+            navLinks.style.display = "";
+            navUser.style.display = "";
+            const uname = this.user?.username || "";
+            document.getElementById("nav-username").textContent = uname;
+            document.getElementById("nav-avatar").textContent = uname.charAt(0).toUpperCase();
         }
     },
 
     handleRoute() {
         const hash = window.location.hash || "#dashboard";
-
         if (!this.isLoggedIn() && hash !== "#login" && hash !== "#register") {
             window.location.hash = "#login";
             return;
@@ -72,14 +73,12 @@ const App = {
             window.location.hash = "#dashboard";
             return;
         }
-
-        // 更新导航高亮
         document.querySelectorAll(".nav-link").forEach(link => {
             link.classList.toggle("active", link.getAttribute("href") === hash);
         });
-
         const renderFn = this.routes[hash];
         if (renderFn) {
+            document.getElementById("app-content").innerHTML = "";
             renderFn();
         } else {
             window.location.hash = "#dashboard";
@@ -87,7 +86,31 @@ const App = {
     },
 };
 
-// 退出登录
+/* ===== Toast 通知 ===== */
+function showToast(msg, type = "info") {
+    const container = document.getElementById("toast-container");
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `<span>${msg}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateX(60px)";
+        toast.style.transition = "all 0.3s ease";
+        setTimeout(() => toast.remove(), 300);
+    }, 3500);
+}
+
+/* ===== 全局 ECharts 辅助 ===== */
+function initChart(domId) {
+    const dom = typeof domId === "string" ? document.getElementById(domId) : domId;
+    if (!dom || dom.offsetWidth === 0) return null;
+    const existing = echarts.getInstanceByDom(dom);
+    if (existing) existing.dispose();
+    return echarts.init(dom);
+}
+
+/* ===== 启动 ===== */
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("btn-logout").addEventListener("click", () => App.logout());
     App.init();

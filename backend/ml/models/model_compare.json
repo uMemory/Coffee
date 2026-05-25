@@ -1,0 +1,134 @@
+{
+  "models": [
+    {
+      "name": "rf",
+      "r2": 0.9368,
+      "rmse": 0.6285,
+      "training_time": "7.7s",
+      "best_params": {
+        "max_depth": null,
+        "min_samples_split": 2,
+        "n_estimators": 100
+      },
+      "n_estimators": 100,
+      "feature_importance": {
+        "风味": 0.3684,
+        "干净杯": 0.1436,
+        "平衡度": 0.0918,
+        "余韵": 0.0871,
+        "甜度": 0.0705,
+        "酸度": 0.0641,
+        "均匀度": 0.0608,
+        "香气": 0.0589,
+        "醇厚度": 0.0445,
+        "海拔": 0.0026,
+        "country_of_origin_encoded": 0.0024,
+        "variety_encoded": 0.0022,
+        "水分": 0.0019,
+        "processing_method_encoded": 0.0011
+      }
+    },
+    {
+      "name": "xgb",
+      "r2": 0.966,
+      "rmse": 0.4608,
+      "training_time": "2.2s",
+      "best_params": {
+        "learning_rate": 0.1,
+        "max_depth": 4,
+        "n_estimators": 200
+      },
+      "feature_importance": {
+        "甜度": 0.5631,
+        "干净杯": 0.142,
+        "风味": 0.0892,
+        "平衡度": 0.0633,
+        "余韵": 0.0588,
+        "均匀度": 0.0306,
+        "香气": 0.0204,
+        "酸度": 0.0202,
+        "醇厚度": 0.0086,
+        "processing_method_encoded": 0.0017,
+        "country_of_origin_encoded": 0.0008,
+        "variety_encoded": 0.0006,
+        "海拔": 0.0005,
+        "水分": 0.0003
+      }
+    },
+    {
+      "name": "lgbm",
+      "r2": 0.9292,
+      "rmse": 0.6654,
+      "training_time": "16.9s",
+      "best_params": {
+        "learning_rate": 0.05,
+        "max_depth": 6,
+        "n_estimators": 100,
+        "num_leaves": 31
+      },
+      "feature_importance": {
+        "醇厚度": 0.1438,
+        "香气": 0.1245,
+        "平衡度": 0.1223,
+        "余韵": 0.118,
+        "风味": 0.1159,
+        "酸度": 0.0987,
+        "干净杯": 0.0844,
+        "均匀度": 0.0765,
+        "variety_encoded": 0.0372,
+        "甜度": 0.0207,
+        "processing_method_encoded": 0.0186,
+        "country_of_origin_encoded": 0.0172,
+        "海拔": 0.0122,
+        "水分": 0.01
+      }
+    },
+    {
+      "name": "gbdt",
+      "r2": 0.9732,
+      "rmse": 0.4093,
+      "training_time": "1.1s",
+      "best_params": {
+        "learning_rate": 0.05,
+        "max_depth": 3,
+        "n_estimators": 200
+      },
+      "feature_importance": {
+        "风味": 0.1679,
+        "酸度": 0.1624,
+        "余韵": 0.1523,
+        "均匀度": 0.1328,
+        "干净杯": 0.1204,
+        "甜度": 0.1012,
+        "平衡度": 0.0803,
+        "醇厚度": 0.0519,
+        "香气": 0.0253,
+        "country_of_origin_encoded": 0.0016,
+        "海拔": 0.0015,
+        "水分": 0.0014,
+        "processing_method_encoded": 0.0007,
+        "variety_encoded": 0.0004
+      },
+      "best": true
+    }
+  ],
+  "best_model": "gbdt",
+  "n_records": 1311,
+  "features": [
+    "aroma",
+    "flavor",
+    "aftertaste",
+    "acidity",
+    "body",
+    "balance",
+    "uniformity",
+    "clean_cup",
+    "sweetness",
+    "moisture",
+    "altitude_mean",
+    "country_of_origin_encoded",
+    "variety_encoded",
+    "processing_method_encoded"
+  ],
+  "trained_date": "2026-05-25T21:56:01.916608"
+}

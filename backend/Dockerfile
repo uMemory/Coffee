@@ -4,7 +4,7 @@ WORKDIR /app
 
 # 安装系统依赖
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
+    gcc g++ libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
 # 安装Python依赖（利用Docker缓存）
