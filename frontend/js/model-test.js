@@ -133,7 +133,7 @@ function loadFormEvents(features) {
 function renderPredictionResult(result, inputFeatures, featureDefs) {
     const container = document.getElementById("predict-result");
     const cls = toEnglishClass(result.quality_class);
-    const classColorsMap = { "excellent": "#27AE60", "very-good": "#2980B9", "good": "#F39C12", "average": "#E67E22", "below-avg": "#E74C3C" };
+    const classColorsMap = { "excellent": "#2F8F62", "very-good": "#315F88", "good": "#D99A21", "average": "#C96F2D", "below-avg": "#C94E46" };
 
     container.innerHTML = `
         <div id="gauge-chart" style="width:100%;height:280px;"></div>
@@ -158,11 +158,11 @@ function renderPredictionResult(result, inputFeatures, featureDefs) {
                 lineStyle: {
                     width: 20,
                     color: [
-                        [0.6, "#E74C3C"],
-                        [0.7, "#E67E22"],
-                        [0.75, "#F39C12"],
-                        [0.8, "#2980B9"],
-                        [0.85, "#27AE60"],
+                        [0.6, "#C94E46"],
+                        [0.7, "#C96F2D"],
+                        [0.75, "#D99A21"],
+                        [0.8, "#315F88"],
+                        [0.85, "#2F8F62"],
                         [1, "#1ABC9C"],
                     ],
                 },
@@ -174,7 +174,4 @@ function renderPredictionResult(result, inputFeatures, featureDefs) {
     });
 }
 
-function toEnglishClass(zh) {
-    const map = { "卓越": "excellent", "优秀": "very-good", "良好": "good", "一般": "average", "较差": "below-avg" };
-    return map[zh] || "below-avg";
-}
+

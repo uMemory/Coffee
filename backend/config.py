@@ -16,7 +16,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # JWT
-    JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "coffee-quality-jwt-secret-2026")
+    JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "coffee-quality-jwt-secret-key-2026!")
     JWT_ACCESS_TOKEN_EXPIRES = 86400  # 24小时
 
     # ML模型路径

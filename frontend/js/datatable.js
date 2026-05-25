@@ -205,11 +205,6 @@ function renderPagination(result) {
     });
 }
 
-function toEnglishClass(zh) {
-    const map = { "卓越": "excellent", "优秀": "very-good", "良好": "good", "一般": "average", "较差": "below-avg" };
-    return map[zh] || "below-avg";
-}
-
 async function showCoffeeDetail(id) {
     try {
         const coffee = await CoffeeAPI.get(id);

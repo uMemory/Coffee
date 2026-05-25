@@ -1,12 +1,12 @@
 /* ========== 数据概览仪表盘 ========== */
 
 const STAT_COLORS = [
-    { bg: "#EBF5FB", icon: "#2980B9" },
-    { bg: "#FEF9E7", icon: "#F39C12" },
-    { bg: "#E8F8F5", icon: "#27AE60" },
-    { bg: "#FDEBD0", icon: "#E67E22" },
-    { bg: "#F4ECF7", icon: "#8E44AD" },
-    { bg: "#FDEDEC", icon: "#C0392B" },
+    { bg: "#E8F0F8", icon: "#315F88" },
+    { bg: "#FDF4E3", icon: "#D9A441" },
+    { bg: "#E2F0EB", icon: "#2F7D6D" },
+    { bg: "#FDE8D8", icon: "#C96F2D" },
+    { bg: "#F1E6F0", icon: "#7A4E2D" },
+    { bg: "#FDE2E0", icon: "#C94E46" },
 ];
 
 const STAT_ICONS = ["📊", "⭐", "🌍", "🌱", "🏆", "💎"];
@@ -90,8 +90,8 @@ function renderCountryBar(data) {
             data: data.map(d => d.avg_score).reverse(),
             itemStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-                    { offset: 0, color: "#D4A574" },
-                    { offset: 1, color: "#6F4E37" },
+                    { offset: 0, color: "#D9A441" },
+                    { offset: 1, color: "#7A4E2D" },
                 ]),
                 borderRadius: [0, 4, 4, 0],
             },
@@ -105,10 +105,7 @@ function renderClassPie(distribution) {
     const data = Object.entries(distribution).map(([name, info]) => ({
         name, value: info.count,
     }));
-    const colors = {
-        "卓越": "#27AE60", "优秀": "#2980B9", "良好": "#F39C12",
-        "一般": "#E67E22", "较差": "#E74C3C",
-    };
+    const colors = QUALITY_COLORS;
     chart.setOption({
         tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
         legend: { bottom: 10 },
@@ -140,8 +137,8 @@ function renderDistribution(data) {
             data: data.map(d => d.count),
             itemStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: "#8B6B52" },
-                    { offset: 1, color: "#D4A574" },
+                    { offset: 0, color: "#7A4E2D" },
+                    { offset: 1, color: "#D9A441" },
                 ]),
                 borderRadius: [6, 6, 0, 0],
             },

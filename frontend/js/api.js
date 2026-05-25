@@ -1,3 +1,13 @@
+/* ========== 共享工具函数 ========== */
+function toEnglishClass(zh) {
+    const map = { "卓越": "excellent", "优秀": "very-good", "良好": "good", "一般": "average", "较差": "below-avg", "below-average": "below-avg" };
+    return map[zh] || "below-avg";
+}
+
+const QUALITY_COLORS = { "卓越": "#2F8F62", "优秀": "#315F88", "良好": "#D99A21", "一般": "#C96F2D", "较差": "#C94E46" };
+const CHART_GRADIENT_START = "#9A6B43";
+const CHART_GRADIENT_END = "#D9A441";
+
 /* ========== API请求封装 ========== */
 
 const API_BASE = "/api";
@@ -69,6 +79,7 @@ const StatsAPI = {
     correlation: () => apiFetch("/stats/correlation"),
     topCoffees: () => apiFetch("/stats/top-coffees"),
     insights: () => apiFetch("/stats/insights"),
+    countryDetail: (country) => apiFetch(`/stats/country/${encodeURIComponent(country)}`),
 };
 
 /* ===== 模型 ===== */

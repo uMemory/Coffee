@@ -61,6 +61,41 @@ def get_summary():
     }
 
 
+def get_country_detail(country_name):
+    """单个国家的详细统计（含等级分布）"""
+    query = Coffee.query.filter(Coffee.country_of_origin == country_name)
+    total = query.count()
+    if total == 0:
+        return None
+
+    avg_score = query.with_entities(db.func.avg(Coffee.total_cup_points)).scalar() or 0
+    max_score = query.with_entities(db.func.max(Coffee.total_cup_points)).scalar() or 0
+    min_score = query.with_entities(db.func.min(Coffee.total_cup_points)).scalar() or 0
+
+    class_counts = dict(
+        query.with_entities(Coffee.quality_class, db.func.count(Coffee.id))
+        .group_by(Coffee.quality_class).all()
+    )
+
+    def pct(k):
+        return round(class_counts.get(k, 0) / total * 100, 1) if total > 0 else 0
+
+    return {
+        "country": country_name,
+        "total": total,
+        "avg_score": round(float(avg_score), 2),
+        "max_score": round(float(max_score), 2),
+        "min_score": round(float(min_score), 2),
+        "quality_distribution": {
+            "卓越": {"count": class_counts.get("卓越", 0), "pct": pct("卓越")},
+            "优秀": {"count": class_counts.get("优秀", 0), "pct": pct("优秀")},
+            "良好": {"count": class_counts.get("良好", 0), "pct": pct("良好")},
+            "一般": {"count": class_counts.get("一般", 0), "pct": pct("一般")},
+            "较差": {"count": class_counts.get("较差", 0), "pct": pct("较差")},
+        },
+    }
+
+
 def get_by_country():
     """各国聚合统计数据"""
     results = (

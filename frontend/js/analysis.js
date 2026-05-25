@@ -66,9 +66,9 @@ async function renderAnalysis() {
 
 function renderMiniStats(summary) {
     const items = [
-        { label: "产地国家", value: summary.num_countries, icon: "🌍", bg: "#EBF5FB" },
-        { label: "咖啡品种", value: summary.num_varieties, icon: "🌱", bg: "#E8F8F5" },
-        { label: "处理方式", value: summary.num_processing_methods, icon: "⚙️", bg: "#FEF9E7" },
+        { label: "产地国家", value: summary.num_countries, icon: "🌍", bg: "#E8F0F8" },
+        { label: "咖啡品种", value: summary.num_varieties, icon: "🌱", bg: "#E2F0EB" },
+        { label: "处理方式", value: summary.num_processing_methods, icon: "⚙️", bg: "#FDF4E3" },
     ];
     document.getElementById("analysis-stats").innerHTML = items.map(i => `
         <div class="stat-card" style="cursor:default;">
@@ -97,7 +97,7 @@ function renderCountryFullChart(data) {
             data: data.map(d => d.avg_score).reverse(),
             itemStyle: {
                 color: (params) => {
-                    const colors = ["#6F4E37", "#8B6B52", "#A0845C", "#B89B72", "#D4A574", "#DEB887", "#E8CC9E", "#F0DBB4", "#F5E6C8", "#FAF0DC"];
+                    const colors = ["#7A4E2D", "#8B5E3C", "#9A6B43", "#B07D4E", "#C08D5A", "#D9A441", "#E0B95A", "#E8CC7E", "#F0DBA0", "#F7EAC2"];
                     return colors[params.dataIndex % colors.length];
                 },
                 borderRadius: [0, 4, 4, 0],
@@ -120,10 +120,13 @@ function renderCountryFullChart(data) {
 }
 
 function renderClassPieAnalysis(summary) {
-    const chart = echarts.init(document.getElementById("chart-class"));
+    const dom = document.getElementById("chart-class");
+    const existing = echarts.getInstanceByDom(dom);
+    if (existing) existing.dispose();
+    const chart = echarts.init(dom);
     const dist = summary.quality_distribution;
     const data = Object.entries(dist).map(([name, info]) => ({ name, value: info.count }));
-    const colors = { "卓越": "#27AE60", "优秀": "#2980B9", "良好": "#F39C12", "一般": "#E67E22", "较差": "#E74C3C" };
+    const colors = QUALITY_COLORS;
     chart.setOption({
         tooltip: { trigger: "item", formatter: "{b}: {c}条 ({d}%)" },
         legend: { bottom: 5 },
@@ -141,24 +144,48 @@ function renderClassPieAnalysis(summary) {
 
 function renderClassPieByCountry(byCountry) {
     if (!byCountry.length) return;
-    // 选第一个国家的数据展示
-    const topCountry = byCountry[0];
-    const chart = echarts.init(document.getElementById("chart-class"));
-    chart.setOption({
-        title: { text: topCountry.country + " 等级分布", left: "center", top: 5, textStyle: { fontSize: 14 } },
-        series: [{
-            type: "pie",
-            radius: ["45%", "72%"],
-            center: ["50%", "50%"],
-            data: [
-                { value: Math.round(topCountry.count * 0.1), name: "卓越" },
-                { value: Math.round(topCountry.count * 0.2), name: "优秀" },
-                { value: Math.round(topCountry.count * 0.35), name: "良好" },
-                { value: Math.round(topCountry.count * 0.25), name: "一般" },
-                { value: Math.round(topCountry.count * 0.1), name: "较差" },
-            ],
-        }],
-    });
+    // 构建国家选择器
+    const chartDom = document.getElementById("chart-class");
+    const parentCard = chartDom.parentElement;
+    let selector = parentCard.querySelector("#country-pie-select");
+    if (!selector) {
+        selector = document.createElement("select");
+        selector.id = "country-pie-select";
+        selector.className = "form-control";
+        selector.style.cssText = "width:200px;margin-bottom:12px;";
+        selector.innerHTML = byCountry.map(c => `<option value="${c.country}">${c.country}</option>`).join("");
+        parentCard.insertBefore(selector, chartDom);
+    }
+
+    async function loadCountryPie(countryName) {
+        const existing = echarts.getInstanceByDom(chartDom);
+        if (existing) existing.dispose();
+        const chart = echarts.init(chartDom);
+        try {
+            const detail = await StatsAPI.countryDetail(countryName);
+            const dist = detail.quality_distribution;
+            const data = Object.entries(dist).map(([name, info]) => ({ name, value: info.count }));
+            chart.setOption({
+                title: { text: countryName + " 等级分布", left: "center", top: 5, textStyle: { fontSize: 14 } },
+                tooltip: { trigger: "item", formatter: "{b}: {c}条 ({d}%)" },
+                legend: { bottom: 5 },
+                series: [{
+                    type: "pie",
+                    radius: ["45%", "72%"],
+                    center: ["50%", "50%"],
+                    itemStyle: { borderRadius: 6, borderColor: "#fff", borderWidth: 3 },
+                    label: { formatter: "{b}\n{d}%" },
+                    data,
+                    color: data.map(d => QUALITY_COLORS[d.name] || "#999"),
+                }],
+            });
+        } catch (e) {
+            chart.setOption({ title: { text: "加载失败", left: "center", top: "center" } });
+        }
+    }
+
+    loadCountryPie(byCountry[0].country);
+    selector.addEventListener("change", (e) => loadCountryPie(e.target.value));
 }
 
 function renderHeatmap(data) {
@@ -191,7 +218,7 @@ function renderHeatmap(data) {
             orient: "horizontal",
             left: "center",
             bottom: 5,
-            inRange: { color: ["#F5F0EB", "#FDEBD0", "#E67E22", "#C0392B"] },
+            inRange: { color: ["#F7F3EC", "#FDF4E3", "#C96F2D", "#C94E46"] },
         },
         series: [{
             type: "heatmap",
@@ -219,8 +246,8 @@ function renderFeatureImportance(importance) {
             data: entries.map(e => e[1]),
             itemStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-                    { offset: 0, color: "#D4A574" },
-                    { offset: 1, color: "#6F4E37" },
+                    { offset: 0, color: "#D9A441" },
+                    { offset: 1, color: "#7A4E2D" },
                 ]),
                 borderRadius: [0, 4, 4, 0],
             },
@@ -237,7 +264,7 @@ async function renderScatter() {
             .filter(d => d.altitude_mean && d.altitude_mean > 0)
             .map(d => [d.altitude_mean, d.total_cup_points, d.quality_class]);
 
-        const classColors = { "卓越": "#27AE60", "优秀": "#2980B9", "良好": "#F39C12", "一般": "#E67E22", "较差": "#E74C3C" };
+        const classColors = QUALITY_COLORS;
         const seriesData = {};
         points.forEach(([x, y, cls]) => {
             if (!seriesData[cls]) seriesData[cls] = [];

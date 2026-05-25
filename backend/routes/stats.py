@@ -4,6 +4,7 @@ from flask_jwt_extended import jwt_required
 from backend.services.stats_service import (
     get_summary,
     get_by_country,
+    get_country_detail,
     get_distribution,
     get_correlation,
     get_top_coffees,
@@ -23,6 +24,15 @@ def summary():
 @jwt_required()
 def by_country():
     return jsonify(get_by_country()), 200
+
+
+@stats_bp.route("/country/<country_name>", methods=["GET"])
+@jwt_required()
+def country_detail(country_name):
+    result = get_country_detail(country_name)
+    if not result:
+        return jsonify({"msg": "国家不存在或无数据"}), 404
+    return jsonify(result), 200
 
 
 @stats_bp.route("/distribution", methods=["GET"])

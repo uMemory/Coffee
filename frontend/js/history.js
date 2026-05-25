@@ -141,7 +141,7 @@ function showHistoryDetail(row) {
             type: "gauge",
             startAngle: 210, endAngle: -30, min: 0, max: 100,
             center: ["50%", "55%"], radius: "85%",
-            axisLine: { lineStyle: { width: 15, color: [[0.6,"#E74C3C"],[0.7,"#E67E22"],[0.75,"#F39C12"],[0.8,"#2980B9"],[0.85,"#27AE60"],[1,"#1ABC9C"]] } },
+            axisLine: { lineStyle: { width: 15, color: [[0.6,"#C94E46"],[0.7,"#C96F2D"],[0.75,"#D99A21"],[0.8,"#315F88"],[0.85,"#2F8F62"],[1,"#1ABC9C"]] } },
             pointer: { length: "65%", width: 5 },
             detail: { show: false },
             data: [{ value: row.predicted_score }],
@@ -162,7 +162,4 @@ function getScoreClassForHistory(score) {
     return "score-low";
 }
 
-function toEnglishClass(zh) {
-    const map = { "卓越": "excellent", "优秀": "very-good", "良好": "good", "一般": "average", "较差": "below-avg", "below-average": "below-avg" };
-    return map[zh] || "below-avg";
-}
+
