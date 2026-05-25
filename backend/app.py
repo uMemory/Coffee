@@ -30,6 +30,10 @@ def create_app():
     app.register_blueprint(stats_bp, url_prefix="/api/stats")
     app.register_blueprint(model_bp, url_prefix="/api/model")
 
+    # 自动建表（Docker 首次启动）
+    with app.app_context():
+        db.create_all()
+
     # SPA: 所有非API路由返回index.html
     @app.route("/")
     @app.route("/<path:path>")
