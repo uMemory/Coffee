@@ -131,17 +131,17 @@ async function showCoffeeDetail(id) {
             <h2 style="margin-bottom:24px;font-size:20px;font-weight:800;">${coffee.country_of_origin} · ${coffee.farm_name || "未知农场"}</h2>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
                 <div>
-                    <h4 style="margin-bottom:12px;color:var(--brand-700);font-size:14px;">基本信息</h4>
+                    <h4 style="margin-bottom:12px;color:#252525;font-size:14px;">基本信息</h4>
                     <table style="width:100%;font-size:13px;">
-                        ${[["国家",coffee.country_of_origin],["产区",coffee.region],["农场",coffee.farm_name],["品种",coffee.variety],["处理方式",coffee.processing_method],["海拔",coffee.altitude],["海拔均值",coffee.altitude_mean?coffee.altitude_mean+"m":"-"]].map(([k,v]) => `<tr><td style="padding:5px 12px;color:var(--gray-500);">${k}</td><td style="padding:5px 12px;font-weight:600;">${v||"-"}</td></tr>`).join("")}
+                        ${[["国家",coffee.country_of_origin],["产区",coffee.region],["农场",coffee.farm_name],["品种",coffee.variety],["处理方式",coffee.processing_method],["海拔",coffee.altitude],["海拔均值",coffee.altitude_mean?coffee.altitude_mean+"m":"-"]].map(([k,v]) => `<tr><td style="padding:5px 12px;color:#6f6f6f;">${k}</td><td style="padding:5px 12px;font-weight:600;">${v||"-"}</td></tr>`).join("")}
                     </table>
-                    <h4 style="margin:20px 0 12px;color:var(--brand-700);font-size:14px;">评分</h4>
+                    <h4 style="margin:20px 0 12px;color:#252525;font-size:14px;">评分</h4>
                     <table style="width:100%;font-size:13px;">
-                        ${[["香气",coffee.aroma],["风味",coffee.flavor],["余韵",coffee.aftertaste],["酸度",coffee.acidity],["醇厚度",coffee.body],["平衡度",coffee.balance],["均匀度",coffee.uniformity],["干净杯",coffee.clean_cup],["甜度",coffee.sweetness],["水分",coffee.moisture+"%"],["总分",coffee.total_cup_points],["等级",coffee.quality_class]].map(([k,v]) => `<tr><td style="padding:5px 12px;color:var(--gray-500);">${k}</td><td style="padding:5px 12px;font-weight:600;">${v!=null?(typeof v==="number"?v.toFixed(1):v):"-"}</td></tr>`).join("")}
+                        ${[["香气",coffee.aroma],["风味",coffee.flavor],["余韵",coffee.aftertaste],["酸度",coffee.acidity],["醇厚度",coffee.body],["平衡度",coffee.balance],["均匀度",coffee.uniformity],["干净杯",coffee.clean_cup],["甜度",coffee.sweetness],["水分",coffee.moisture+"%"],["总分",coffee.total_cup_points],["等级",coffee.quality_class]].map(([k,v]) => `<tr><td style="padding:5px 12px;color:#6f6f6f;">${k}</td><td style="padding:5px 12px;font-weight:600;">${v!=null?(typeof v==="number"?v.toFixed(1):v):"-"}</td></tr>`).join("")}
                     </table>
                 </div>
                 <div>
-                    <h4 style="margin-bottom:12px;color:var(--brand-700);font-size:14px;">风味雷达图</h4>
+                    <h4 style="margin-bottom:12px;color:#252525;font-size:14px;">风味雷达图</h4>
                     <div id="detail-radar" style="height:400px;"></div>
                 </div>
             </div>`;
@@ -158,7 +158,7 @@ async function showCoffeeDetail(id) {
             series: [{
                 type: "radar",
                 data: [
-                    { name: "本咖啡", value: fields.map(f => coffee[f] || 0), areaStyle: { color: "rgba(122,78,45,0.2)" }, lineStyle: { color: "#7A4E2D", width: 2 }, itemStyle: { color: "#7A4E2D" } },
+                    { name: "本咖啡", value: fields.map(f => coffee[f] || 0), areaStyle: { color: "rgba(37,37,37,0.2)" }, lineStyle: { color: "#252525", width: 2 }, itemStyle: { color: "#252525" } },
                     { name: "全球均值", value: fields.map(() => 7.5), areaStyle: { color: "rgba(200,200,200,0.08)" }, lineStyle: { color: "#ccc", width: 1, type: "dashed" }, itemStyle: { color: "#999" } },
                 ],
             }],

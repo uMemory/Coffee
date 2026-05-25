@@ -61,7 +61,7 @@ function renderFeatureInputs(features) {
 function featureField(f) {
     const mid = ((f.max + f.min) / 2).toFixed(f.step < 1 ? 1 : 0);
     return `<div class="form-group">
-        <label class="form-label">${f.label} <span style="font-weight:400;color:var(--gray-400);">(${f.min}-${f.max}${f.unit})</span></label>
+        <label class="form-label">${f.label} <span style="font-weight:400;color:#6f6f6f;">(${f.min}-${f.max}${f.unit})</span></label>
         <div class="range-input">
             <input type="range" name="${f.name}" min="${f.min}" max="${f.max}" step="${f.step}" value="${mid}" data-num="num-${f.name}">
             <input type="number" id="num-${f.name}" class="form-control" value="${mid}" min="${f.min}" max="${f.max}" step="${f.step}">
@@ -134,12 +134,12 @@ function renderResult(result) {
         <div class="predict-score-big">${result.predicted_score}</div>
         <div class="predict-grade"><span class="quality-tag ${cls}" style="font-size:14px;padding:5px 18px;">${result.quality_class}</span></div>
         ${result.confidence_interval?.lower ? `<div class="predict-ci-label">置信区间: ${result.confidence_interval.lower} ~ ${result.confidence_interval.upper}</div>` : ""}
-        <div style="margin-top:12px;font-size:12px;color:var(--gray-400);">模型: ${modelLabel(result.model || currentModel)}</div>`;
+        <div style="margin-top:12px;font-size:12px;color:#6f6f6f;">模型: ${modelLabel(result.model || currentModel)}</div>`;
     const g = initChart("gauge-chart");
     g.setOption({
         series: [{
             type: "gauge", startAngle: 210, endAngle: -30, min: 0, max: 100, center: ["50%","58%"], radius: "88%",
-            axisLine: { lineStyle: { width: 18, color: [[0.6,"#C94E46"],[0.7,"#C96F2D"],[0.75,"#D99A21"],[0.8,"#315F88"],[0.85,"#2F8F62"],[1,"#1ABC9C"]] } },
+            axisLine: { lineStyle: { width: 18, color: [[0.6,"#d64545"],[0.7,"#e57b26"],[0.75,"#f5a623"],[0.8,"#2374ab"],[0.85,"#2fa866"],[1,"#2fa866"]] } },
             pointer: { length: "65%", width: 5 },
             detail: { show: false },
             data: [{ value: result.predicted_score }],
@@ -162,7 +162,7 @@ function renderSHAP(data) {
         series: [{
             type: "bar", data: entries.map(e => e.value).reverse(),
             itemStyle: {
-                color: p => p.data > 0 ? "#2F8F62" : "#C94E46",
+                color: p => p.data > 0 ? "#2fa866" : "#d64545",
                 borderRadius: p.data > 0 ? [0, 4, 4, 0] : [4, 0, 0, 4],
             },
             label: { show: true, position: "right", fontSize: 10, formatter: v => (v > 0 ? "+" : "") + v.toFixed(3) },

@@ -31,12 +31,12 @@ function renderModelCards(data) {
 
     document.getElementById("model-cards").innerHTML = models.map(m => {
         const isBest = m.name === best.name;
-        return `<div class="model-card" style="${isBest ? 'border:2px solid var(--accent-400);' : ''}">
+        return `<div class="model-card" style="${isBest ? 'border:2px solid #f76d37;' : ''}">
             <div class="model-card-header">
                 <span class="model-card-name">${modelLabel(m.name)}</span>
                 ${isBest ? '<span class="model-card-badge best">最优</span>' : ''}
             </div>
-            <div class="model-metric"><span>R²</span><span class="model-metric-value" style="color:${(m.r2||0) > 0.85 ? 'var(--green)' : 'var(--gray-600)'};">${(m.r2||0).toFixed(4)}</span></div>
+            <div class="model-metric"><span>R²</span><span class="model-metric-value" style="color:${(m.r2||0) > 0.85 ? 'var(--green)' : '#6f6f6f'};">${(m.r2||0).toFixed(4)}</span></div>
             <div class="model-metric"><span>RMSE</span><span class="model-metric-value">${(m.rmse||0).toFixed(4)}</span></div>
             ${m.training_time ? `<div class="model-metric"><span>训练时间</span><span class="model-metric-value">${m.training_time}</span></div>` : ""}
             ${m.best_params ? `<div class="model-metric"><span>最佳参数</span><span class="model-metric-value" style="font-size:11px;">${JSON.stringify(m.best_params)}</span></div>` : ""}
@@ -60,7 +60,7 @@ function renderCompareCharts(data) {
         series: [{
             type: "bar", data: models.map(m => m.r2 || 0),
             itemStyle: {
-                color: p => p.data === Math.max(...models.map(m => m.r2 || 0)) ? "#2F8F62" : "#7A4E2D",
+                color: p => p.data === Math.max(...models.map(m => m.r2 || 0)) ? "#2fa866" : "#252525",
                 borderRadius: [6, 6, 0, 0],
             },
             label: { show: true, position: "top", fontSize: 11, formatter: p => (typeof p.data === 'number' ? p.data : p.value).toFixed(4) },
@@ -77,7 +77,7 @@ function renderCompareCharts(data) {
         series: [{
             type: "bar", data: models.map(m => m.rmse || 0),
             itemStyle: {
-                color: p => p.data === Math.min(...models.map(m => m.rmse || 0)) ? "#2F8F62" : "#C96F2D",
+                color: p => p.data === Math.min(...models.map(m => m.rmse || 0)) ? "#2fa866" : "#e57b26",
                 borderRadius: [6, 6, 0, 0],
             },
             label: { show: true, position: "top", fontSize: 11, formatter: p => (typeof p.data === 'number' ? p.data : p.value).toFixed(4) },
@@ -96,7 +96,7 @@ function renderCompareCharts(data) {
             yAxis: { type: "category", data: entries.map(e => e[0]), axisLabel: { fontSize: 10 } },
             series: [{
                 type: "bar", data: entries.map(e => e[1]),
-                itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: "#D9A441" }, { offset: 1, color: "#7A4E2D" }]), borderRadius: [0, 4, 4, 0] },
+                itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: "#f76d37" }, { offset: 1, color: "#252525" }]), borderRadius: [0, 4, 4, 0] },
                 label: { show: true, position: "right", fontSize: 10, formatter: p => (typeof p.data === 'number' ? p.data : p.value).toFixed(3) },
             }],
         });

@@ -64,7 +64,7 @@ function renderCountryChart(data) {
         series: [{
             type: "bar", data: data.map(d => d.avg_score).reverse(),
             itemStyle: {
-                color: p => ["#7A4E2D","#8B5E3C","#9A6B43","#B07D4E","#C08D5A","#D9A441","#E0B95A","#E8CC7E","#F0DBA0","#F7EAC2"][p.dataIndex % 10],
+                color: p => ["#252525","#555","#666","#777","#888","#f76d37","#f76d37","#f98d57","#faa870","#fcc390"][p.dataIndex % 10],
                 borderRadius: [0, 4, 4, 0],
             },
             label: { show: true, position: "right", fontSize: 10.5 },
@@ -135,7 +135,7 @@ function renderHeatmap(data) {
         grid: { left: 90, right: 20, top: 8, bottom: 70 },
         xAxis: { type: "category", data: data.labels, axisLabel: { rotate: 45, fontSize: 10 } },
         yAxis: { type: "category", data: data.labels, axisLabel: { fontSize: 10 } },
-        visualMap: { min: 0, max: 1, orient: "horizontal", left: "center", bottom: 0, inRange: { color: ["#F7F3EC","#FDF4E3","#C96F2D","#C94E46"] } },
+        visualMap: { min: 0, max: 1, orient: "horizontal", left: "center", bottom: 0, inRange: { color: ["#F7F3EC","#FDF4E3","#e57b26","#d64545"] } },
         series: [{ type: "heatmap", data: hm, label: { show: data.labels.length <= 10, fontSize: 9 } }],
     });
 }
@@ -151,7 +151,7 @@ function renderImportance(importance) {
         yAxis: { type: "category", data: entries.map(e => e[0]), axisLabel: { fontSize: 10 } },
         series: [{
             type: "bar", data: entries.map(e => e[1]),
-            itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: "#D9A441" }, { offset: 1, color: "#7A4E2D" }]), borderRadius: [0, 4, 4, 0] },
+            itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: "#f76d37" }, { offset: 1, color: "#252525" }]), borderRadius: [0, 4, 4, 0] },
             label: { show: true, position: "right", fontSize: 10, formatter: v => v.toFixed(3) },
         }],
     });
@@ -178,7 +178,7 @@ async function renderScatterPlot() {
 
 function renderInsights(insights) {
     const panel = document.getElementById("insights-panel");
-    if (!insights.length) { panel.innerHTML = `<p style="color:var(--gray-400);">暂无数据洞察</p>`; return; }
+    if (!insights.length) { panel.innerHTML = `<p style="color:#6f6f6f;">暂无数据洞察</p>`; return; }
     const icons = ["📌","🔍","📊","🌡️","🌱","💡","📈","🎯"];
     panel.innerHTML = insights.map((t, i) => `<div class="insight-card"><span style="margin-right:8px;">${icons[i%icons.length]}</span>${t}</div>`).join("");
 }

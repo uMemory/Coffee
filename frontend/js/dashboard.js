@@ -3,12 +3,12 @@
    ================================================================ */
 
 const STAT_CARD_DEFS = [
-    { key: "total_records", label: "样本总数", icon: "📊", color: "#E8F0F8", iconBg: "#315F88", route: "#data" },
-    { key: "avg_score", label: "平均品质分", icon: "⭐", color: "#FDF4E3", iconBg: "#D9A441", route: "#data", suffix: "" },
+    { key: "total_records", label: "样本总数", icon: "📊", color: "#E8F0F8", iconBg: "#2374ab", route: "#data" },
+    { key: "avg_score", label: "平均品质分", icon: "⭐", color: "#FDF4E3", iconBg: "#f76d37", route: "#data", suffix: "" },
     { key: "num_countries", label: "产地国家", icon: "🌍", color: "#E2F0EB", iconBg: "#2F7D6D", route: "#data" },
-    { key: "num_varieties", label: "品种数量", icon: "🌱", color: "#FDE8D8", iconBg: "#C96F2D", route: "#data" },
-    { key: "top_country_card", label: "", icon: "🏆", color: "#F1E6F0", iconBg: "#7A4E2D", route: "#analysis" },
-    { key: "excellent_pct", label: "卓越占比", icon: "💎", color: "#FDE2E0", iconBg: "#C94E46", route: "#data" },
+    { key: "num_varieties", label: "品种数量", icon: "🌱", color: "#FDE8D8", iconBg: "#e57b26", route: "#data" },
+    { key: "top_country_card", label: "", icon: "🏆", color: "#F1E6F0", iconBg: "#252525", route: "#analysis" },
+    { key: "excellent_pct", label: "卓越占比", icon: "💎", color: "#FDE2E0", iconBg: "#d64545", route: "#data" },
 ];
 
 async function renderDashboard() {
@@ -103,7 +103,7 @@ function renderCountryBar(data) {
             data: data.map(d => d.avg_score).reverse(),
             itemStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-                    { offset: 0, color: "#D9A441" }, { offset: 1, color: "#7A4E2D" },
+                    { offset: 0, color: "#f76d37" }, { offset: 1, color: "#252525" },
                 ]),
                 borderRadius: [0, 6, 6, 0],
             },
@@ -144,7 +144,7 @@ function renderDistribution(data) {
             data: data.map(d => d.count),
             itemStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: "#7A4E2D" }, { offset: 1, color: "#D9A441" },
+                    { offset: 0, color: "#252525" }, { offset: 1, color: "#f76d37" },
                 ]),
                 borderRadius: [6, 6, 0, 0],
             },

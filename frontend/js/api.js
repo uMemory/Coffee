@@ -10,7 +10,7 @@ function toEnglishClass(zh) {
     return map[zh] || "below-avg";
 }
 
-const QUALITY_COLORS = { "卓越": "#2F8F62", "优秀": "#315F88", "良好": "#D99A21", "一般": "#C96F2D", "较差": "#C94E46" };
+const QUALITY_COLORS = { "卓越": "#2fa866", "优秀": "#2374ab", "良好": "#f5a623", "一般": "#e57b26", "较差": "#d64545" };
 
 function getScoreClass(score) {
     if (score >= 85) return "score-high";
@@ -26,21 +26,14 @@ function formatTime(isoStr) {
 }
 
 /* -------- HTTP 核心 -------- */
-function getToken() {
-    return localStorage.getItem("token");
-}
+function getToken() { return localStorage.getItem("token"); }
 
 async function apiFetch(url, options = {}) {
     const token = getToken();
-    const headers = {
-        "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        ...options.headers,
-    };
+    const headers = { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}), ...options.headers };
     const response = await fetch(API_BASE + url, { ...options, headers });
     if (response.status === 401) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        localStorage.removeItem("token"); localStorage.removeItem("user");
         window.location.hash = "#login";
         throw new Error("登录已过期，请重新登录");
     }
@@ -51,17 +44,15 @@ async function apiFetch(url, options = {}) {
 
 /* -------- 认证 -------- */
 const AuthAPI = {
-    register: (username, password, email) =>
-        apiFetch("/auth/register", { method: "POST", body: JSON.stringify({ username, password, email }) }),
-    login: (username, password) =>
-        apiFetch("/auth/login", { method: "POST", body: JSON.stringify({ username, password }) }),
+    register: (u, p, e) => apiFetch("/auth/register", { method: "POST", body: JSON.stringify({ username: u, password: p, email: e }) }),
+    login: (u, p) => apiFetch("/auth/login", { method: "POST", body: JSON.stringify({ username: u, password: p }) }),
     me: () => apiFetch("/auth/me"),
 };
 
 /* -------- 咖啡数据 -------- */
 const CoffeeAPI = {
     list: (params = {}) => {
-        const qs = new URLSearchParams(Object.entries(params).filter(([,v]) => v != null && v !== "")).toString();
+        const qs = new URLSearchParams(Object.entries(params).filter(([, v]) => v != null && v !== "")).toString();
         return apiFetch(`/coffee?${qs}`);
     },
     get: (id) => apiFetch(`/coffee/${id}`),
@@ -77,21 +68,19 @@ const StatsAPI = {
     correlation: () => apiFetch("/stats/correlation"),
     topCoffees: () => apiFetch("/stats/top-coffees"),
     insights: () => apiFetch("/stats/insights"),
-    countryDetail: (country) => apiFetch(`/stats/country/${encodeURIComponent(country)}`),
+    countryDetail: (c) => apiFetch(`/stats/country/${encodeURIComponent(c)}`),
 };
 
 /* -------- 模型 -------- */
 const ModelAPI = {
     features: () => apiFetch("/model/features"),
     info: () => apiFetch("/model/info"),
-    predict: (features, model) =>
-        apiFetch("/model/predict", { method: "POST", body: JSON.stringify({ features, model }) }),
+    predict: (features, model) => apiFetch("/model/predict", { method: "POST", body: JSON.stringify({ features, model }) }),
     history: (params = {}) => {
-        const qs = new URLSearchParams(Object.entries(params).filter(([,v]) => v != null && v !== "")).toString();
+        const qs = new URLSearchParams(Object.entries(params).filter(([, v]) => v != null && v !== "")).toString();
         return apiFetch(`/model/history?${qs}`);
     },
     compare: () => apiFetch("/model/compare"),
     list: () => apiFetch("/model/list"),
-    shap: (features, model) =>
-        apiFetch("/model/shap", { method: "POST", body: JSON.stringify({ features, model }) }),
+    shap: (features, model) => apiFetch("/model/shap", { method: "POST", body: JSON.stringify({ features, model }) }),
 };

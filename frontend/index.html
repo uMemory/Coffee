@@ -6,48 +6,32 @@
     <title>全球咖啡品质评级系统</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 </head>
 <body>
-    <!-- 侧边导航栏 -->
+    <!-- 顶部导航栏 -->
     <nav id="navbar" class="navbar">
         <div class="nav-brand">
-            <span class="nav-logo">CQ</span>
+            <span class="nav-logo"><img src="images/logo.png" alt="Grand Coffee"></span>
             <span>
                 <span class="nav-title">全球咖啡品质评级系统</span>
-                <span class="nav-subtitle">Coffee Quality Intelligence</span>
+                <span class="nav-subtitle">Coffee Quality Analytics</span>
             </span>
         </div>
-        <div class="nav-divider"></div>
         <div id="nav-links" class="nav-links">
-            <span class="nav-section-label">数据探索</span>
-            <a href="#dashboard" class="nav-link active">
-                <span class="nav-link-icon">&#9673;</span>数据概览
-            </a>
-            <a href="#data" class="nav-link">
-                <span class="nav-link-icon">&#9776;</span>数据浏览
-            </a>
-            <a href="#analysis" class="nav-link">
-                <span class="nav-link-icon">&#9733;</span>数据分析
-            </a>
-            <span class="nav-section-label">智能分析</span>
-            <a href="#predict" class="nav-link">
-                <span class="nav-link-icon">&#9731;</span>模型预测
-            </a>
-            <a href="#models" class="nav-link">
-                <span class="nav-link-icon">&#9881;</span>模型对比
-            </a>
-            <a href="#history" class="nav-link">
-                <span class="nav-link-icon">&#9776;</span>预测历史
-            </a>
+            <a href="#dashboard" class="nav-link active">数据概览</a>
+            <a href="#data" class="nav-link">数据浏览</a>
+            <a href="#analysis" class="nav-link">数据分析</a>
+            <a href="#predict" class="nav-link">模型预测</a>
+            <a href="#models" class="nav-link">模型对比</a>
+            <a href="#history" class="nav-link">预测历史</a>
         </div>
         <div class="nav-user">
             <div class="nav-avatar" id="nav-avatar">?</div>
             <div class="nav-user-info">
                 <div class="nav-username" id="nav-username"></div>
-                <div class="nav-user-label">当前用户</div>
             </div>
             <button id="btn-logout" class="btn btn-sm btn-outline">退出</button>
         </div>
@@ -58,7 +42,7 @@
 
     <!-- 页脚 -->
     <footer class="footer">
-        <p>云计算期末大作业 &copy; 2026 | Coffee Quality Intelligence</p>
+        <p>云计算期末大作业 &copy; 2026 | 全球咖啡品质评级系统</p>
     </footer>
 
     <!-- 模态框 -->
