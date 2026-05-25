@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pkl
+*.db
+venv/
+.env
+data/*.csv
+.DS_Store
+.claude/
+.idea/

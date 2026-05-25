@@ -1,0 +1,51 @@
+{
+  "model_type": "RandomForestRegressor",
+  "r2_score": 0.9373,
+  "rmse": 0.6261,
+  "feature_importance": {
+    "风味": 0.357,
+    "干净杯": 0.1439,
+    "余韵": 0.1415,
+    "平衡度": 0.076,
+    "酸度": 0.0701,
+    "香气": 0.0581,
+    "甜度": 0.0565,
+    "均匀度": 0.047,
+    "醇厚度": 0.0423,
+    "海拔": 0.0048,
+    "水分": 0.0028
+  },
+  "features": [
+    "aroma",
+    "flavor",
+    "aftertaste",
+    "acidity",
+    "body",
+    "balance",
+    "uniformity",
+    "clean_cup",
+    "sweetness",
+    "moisture",
+    "altitude_mean"
+  ],
+  "feature_labels": [
+    "香气",
+    "风味",
+    "余韵",
+    "酸度",
+    "醇厚度",
+    "平衡度",
+    "均匀度",
+    "干净杯",
+    "甜度",
+    "水分",
+    "海拔"
+  ],
+  "best_params": {
+    "max_depth": 15,
+    "min_samples_split": 2,
+    "n_estimators": 100
+  },
+  "n_records": 1311,
+  "trained_date": "2026-05-25T19:57:30.447976"
+}
