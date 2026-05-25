@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="320" font-family="Poppins,Microsoft YaHei,sans-serif" font-size="12">
+  <defs>
+    <marker id="er-ref" viewBox="0 0 10 7" markerWidth="10" markerHeight="7" refX="8.5" refY="3.5" orient="auto" markerUnits="userSpaceOnUse" overflow="visible">
+      <polygon points="0 0,10 3.5,0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <text x="430" y="26" text-anchor="middle" font-size="17" font-weight="bold" fill="#252525">图 3 · 数据库 ER 图</text>
+
+  <!-- users table -->
+  <rect x="30" y="50" width="240" height="255" rx="6" fill="#fff" stroke="#2563eb" stroke-width="1.5"/>
+  <rect x="30" y="50" width="240" height="32" rx="6" fill="#2563eb"/>
+  <rect x="30" y="68" width="240" height="2" fill="#2563eb"/>
+  <text x="150" y="72" text-anchor="middle" font-weight="bold" fill="#fff">users</text>
+
+  <text x="45" y="102" fill="#111827" font-family="monospace" font-size="11">id</text><text x="160" y="102" fill="#6f6f6f" font-size="10">INT PK AUTO_INCREMENT</text>
+  <line x1="40" y1="108" x2="260" y2="108" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="45" y="126" fill="#111827" font-family="monospace" font-size="11">username</text><text x="160" y="126" fill="#6f6f6f" font-size="10">VARCHAR(50) UNIQUE</text>
+  <line x1="40" y1="132" x2="260" y2="132" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="45" y="150" fill="#111827" font-family="monospace" font-size="11">password_hash</text><text x="160" y="150" fill="#6f6f6f" font-size="10">VARCHAR(255)</text>
+  <line x1="40" y1="156" x2="260" y2="156" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="45" y="174" fill="#111827" font-family="monospace" font-size="11">email</text><text x="160" y="174" fill="#6f6f6f" font-size="10">VARCHAR(100)</text>
+  <line x1="40" y1="180" x2="260" y2="180" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="45" y="198" fill="#111827" font-family="monospace" font-size="11">created_at</text><text x="160" y="198" fill="#6f6f6f" font-size="10">DATETIME</text>
+  <line x1="40" y1="204" x2="260" y2="204" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="45" y="222" fill="#111827" font-family="monospace" font-size="11">last_login</text><text x="160" y="222" fill="#6f6f6f" font-size="10">DATETIME</text>
+
+  <!-- FK hint -->
+  <rect x="100" y="275" width="100" height="22" rx="4" fill="#fff7ed" stroke="#ea580c" stroke-width="1"/>
+  <text x="150" y="291" text-anchor="middle" font-size="9" fill="#c2410c">1:N → predictions</text>
+
+  <!-- coffees table -->
+  <rect x="310" y="50" width="250" height="220" rx="6" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+  <rect x="310" y="50" width="250" height="32" rx="6" fill="#16a34a"/>
+  <rect x="310" y="68" width="250" height="2" fill="#16a34a"/>
+  <text x="435" y="72" text-anchor="middle" font-weight="bold" fill="#fff">coffees</text>
+
+  <text x="325" y="102" fill="#111827" font-family="monospace" font-size="11">id</text><text x="400" y="102" fill="#6f6f6f" font-size="10">INT PK</text>
+  <line x1="320" y1="108" x2="550" y2="108" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="325" y="126" fill="#111827" font-family="monospace" font-size="11">country_of_origin</text><text x="400" y="126" fill="#6f6f6f" font-size="10">VARCHAR(50) INDEX</text>
+  <line x1="320" y1="132" x2="550" y2="132" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="325" y="150" fill="#111827" font-family="monospace" font-size="11">farm_name</text><text x="400" y="150" fill="#6f6f6f" font-size="10">VARCHAR(200)</text>
+  <line x1="320" y1="156" x2="550" y2="156" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="325" y="168" fill="#6f6f6f" font-size="10">... variety / processing_method / altitude / region ...</text>
+  <line x1="320" y1="174" x2="550" y2="174" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="325" y="192" fill="#111827" font-family="monospace" font-size="11">aroma ~ sweetness</text><text x="400" y="192" fill="#6f6f6f" font-size="10">FLOAT (0-10) ×10</text>
+  <line x1="320" y1="198" x2="550" y2="198" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="325" y="216" fill="#111827" font-family="monospace" font-size="11">total_cup_points</text><text x="400" y="216" fill="#6f6f6f" font-size="10">FLOAT INDEX</text>
+  <line x1="320" y1="222" x2="550" y2="222" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="325" y="240" fill="#111827" font-family="monospace" font-size="11">quality_class</text><text x="400" y="240" fill="#6f6f6f" font-size="10">VARCHAR(20)</text>
+
+  <!-- predictions table -->
+  <rect x="600" y="50" width="235" height="180" rx="6" fill="#fff" stroke="#ea580c" stroke-width="1.5"/>
+  <rect x="600" y="50" width="235" height="32" rx="6" fill="#ea580c"/>
+  <rect x="600" y="68" width="235" height="2" fill="#ea580c"/>
+  <text x="717" y="72" text-anchor="middle" font-weight="bold" fill="#fff">predictions</text>
+
+  <text x="615" y="102" fill="#111827" font-family="monospace" font-size="11">id</text><text x="700" y="102" fill="#6f6f6f" font-size="10">INT PK</text>
+  <line x1="610" y1="108" x2="825" y2="108" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="615" y="126" fill="#111827" font-family="monospace" font-size="11">user_id</text><text x="700" y="126" fill="#6f6f6f" font-size="10">INT FK → users</text>
+  <line x1="610" y1="132" x2="825" y2="132" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="615" y="150" fill="#111827" font-family="monospace" font-size="11">input_features</text><text x="700" y="150" fill="#6f6f6f" font-size="10">JSON</text>
+  <line x1="610" y1="156" x2="825" y2="156" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="615" y="174" fill="#111827" font-family="monospace" font-size="11">predicted_score</text><text x="700" y="174" fill="#6f6f6f" font-size="10">FLOAT</text>
+  <line x1="610" y1="180" x2="825" y2="180" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="615" y="198" fill="#111827" font-family="monospace" font-size="11">predicted_class</text><text x="700" y="198" fill="#6f6f6f" font-size="10">VARCHAR(20)</text>
+  <line x1="610" y1="204" x2="825" y2="204" stroke="#e9e9e9" stroke-width="0.5"/>
+
+  <text x="615" y="222" fill="#111827" font-family="monospace" font-size="11">created_at</text><text x="700" y="222" fill="#6f6f6f" font-size="10">DATETIME</text>
+
+  <!-- FK arrow: users → predictions -->
+  <line x1="270" y1="155" x2="598" y2="130" stroke="#6b7280" stroke-width="1.2" marker-end="url(#er-ref)"/>
+  <text x="420" y="138" font-size="10" fill="#6f6f6f">user_id FK</text>
+</svg>
